@@ -10,7 +10,7 @@ ventana.geometry("1000x800")
 ventana.configure(background="lightblue")
 
 #imagen de fondo
-logo = Image.open("Imagenes\spalogo.png")
+logo = Image.open("MiniProyectoSpa\Imagenes\spalogo.png")
 logo = logo.resize((1000, 800))  
 logo_fondo = ImageTk.PhotoImage(logo)
 
