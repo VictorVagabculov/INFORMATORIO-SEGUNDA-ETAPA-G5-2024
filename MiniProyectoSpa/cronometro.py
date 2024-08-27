@@ -1,4 +1,4 @@
-gimpoert time
+import time
 
 def cronometro():
     minutos = 0

@@ -11,9 +11,9 @@ def obtener_duracion(servicio):
     return (f"Duración: {tiempo} minutos")
 
 #Para poder usar la función anterior como label
-def mostrar_duracion(servicio):
-    duracion = obtener_duracion(servicio)
-    etiqueta.config(text=duracion)
+# def mostrar_duracion(servicio):
+#      duracion = obtener_duracion(servicio)
+#      etiqueta.config(text=duracion)
 
 
 ventana =tk.Tk()
@@ -27,7 +27,7 @@ ventana.config(menu = menu_servicio)
 menu_principal = tk.Menu(menu_servicio)
 menu_servicio.add_cascade(label = 'Servicios', menu= menu_principal)
 
-#Despliegue de servicios ofrecidos que a su vez despliega la duraciín de cada uno.
+#Despliegue de servicios ofrecidos que a su vez despliega la duraciión de cada uno.
 
 for servicio in lista_de_servicios:
     submenu = tk.Menu(menu_principal)
