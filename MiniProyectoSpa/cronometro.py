@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from PIL import ImageTk, Image
-
+import time
 #ventana
 ventana = tk.Tk()
 
@@ -50,7 +50,6 @@ boton_eliminar = tk.Button(ventana, text = '✖', command = eliminar_tarea,font=
 boton_eliminar.grid(row=2, column=1, columnspan=1, padx=10, pady=10)
 
 #cronometro
-
 
 def cronometro():
     minutos = 0
