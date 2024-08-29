@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from PIL import ImageTk, Image
-
+import time
 #ventana
 ventana = tk.Tk()
 
@@ -70,7 +70,7 @@ def cronometro():
         print("\nCronómetro detenido.")
 
 # Ejecutar el cronómetro
-cronometro()
+# cronometro()
     
 
 
