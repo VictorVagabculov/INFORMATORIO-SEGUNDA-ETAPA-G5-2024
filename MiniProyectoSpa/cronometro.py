@@ -51,7 +51,6 @@ boton_eliminar.grid(row=2, column=1, columnspan=1, padx=10, pady=10)
 
 #cronometro
 
-
 def cronometro():
     minutos = 0
     segundos = 0

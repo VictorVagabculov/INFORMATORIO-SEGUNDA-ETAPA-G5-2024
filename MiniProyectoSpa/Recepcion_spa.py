@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from PIL import ImageTk, Image
+import time 
+from servicios import *
 
 #ventana
 ventana = tk.Tk()
@@ -35,6 +37,7 @@ def agregar_cliente():
     if tarea:
         lista_cliente.insert(tk.END, tarea)
     ingreso_cliente.delete(0, tk.END)
+
 boton_agregar = tk.Button(ventana, text = "✔", command = agregar_cliente,font=("Arial", 10), justify="center", background="lightblue", borderwidth=3,width=2,height=1)
 boton_agregar.grid(row=0, column=1, columnspan=1, padx=10, pady=10)
 
@@ -49,8 +52,33 @@ def eliminar_tarea():
 boton_eliminar = tk.Button(ventana, text = '✖', command = eliminar_tarea,font=("Arial", 10), justify="center", background="lightblue", borderwidth=3,width=2,height=1)
 boton_eliminar.grid(row=2, column=1, columnspan=1, padx=10, pady=10)
 
+#reloj
 
+reloj = tk.Label(ventana, font= ('Arial', 45), bg = 'lightblue', fg ='black')
 
+def hora():
+         tiempo_actual = time.strftime('%H: %M: %S')
+         reloj.config(text = tiempo_actual)
+         ventana.after(1000, hora)
+reloj.grid(row=0, column=4,columnspan=1, padx=300, pady=10)
+hora()
+
+# Menu desplegable de servicios
+
+boton_menu = tk.Menubutton(ventana, text='Servicios Principales', relief=tk.RAISED, width=30,height=1, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+boton_menu.grid(row=1,column=0,padx=20, pady=20)
+
+menu_principal = tk.Menu(boton_menu, tearoff=0,relief=tk.RAISED, font=("Arial", 14, "bold"), background="lightblue", borderwidth=3)
+boton_menu.config(menu=menu_principal)
+
+servicios = {'Manos': Manos, 'Pies': Pies, 'Cutis': Cutis, 'Masajes': Masajes}
+
+for categoria, opciones in servicios.items():
+    submenu = tk.Menu(menu_principal, tearoff=0,relief=tk.RAISED, font=("Arial", 14, "bold"), background="lightblue", borderwidth=3)
+    menu_principal.add_cascade(label=categoria, menu=submenu,)
+    
+    for llave,valor in opciones.items():
+        submenu.add_command(label=f"{llave}:  {valor} minutos.")
 
 ventana.mainloop()
 
