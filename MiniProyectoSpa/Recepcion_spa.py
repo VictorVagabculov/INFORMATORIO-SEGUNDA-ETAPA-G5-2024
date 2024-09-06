@@ -1,191 +1,111 @@
 import tkinter as tk
-from tkinter import PhotoImage
-#from PIL import ImageTk, Image
-from  tkinter import  ttk,Frame
+from PIL import ImageTk, Image
 import time
-
-
 from servicios import *
+from extras import *
 
-# ------------------- ventana-----------
+# Ventana principal
 ventana = tk.Tk()
 ventana.title("Recepción Spa")
 ventana.geometry("1000x800")
 ventana.configure(background="lightblue")
+ventana.iconbitmap("MiniProyectoSpa\Imagenes\spalogonegro.ico")
 
+# Imagen de fondo
+logo = Image.open("MiniProyectoSpa\Imagenes\spalogo.png")
+logo = logo.resize((1000, 800))
+logo_fondo = ImageTk.PhotoImage(logo)
+label_fondo = tk.Label(ventana, image=logo_fondo, bg="lightblue")
+label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
 
+# Ingreso de cliente
+nombre_cliente = tk.StringVar()
+ingreso_cliente = tk.Entry(ventana, width=30, textvariable=nombre_cliente, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+ingreso_cliente.grid(row=0, column=0, columnspan=1, padx=10, pady=10)
+nombre_cliente.set("Nombre del Cliente")
 
+# Botón para agregar cliente
+def agregar_cliente():
+    tarea = ingreso_cliente.get()
+    if tarea:
+        lista_cliente.insert(tk.END, tarea)
+    ingreso_cliente.delete(0, tk.END)
 
+boton_agregar = tk.Button(ventana, text="✔", command=agregar_cliente, font=("Arial", 10), justify="center", background="lightblue", borderwidth=3, width=2, height=1)
+boton_agregar.grid(row=0, column=1, columnspan=1, padx=10, pady=10)
 
-#-------------/  FRAME1 |---------------------------------------
+lista_cliente = tk.Listbox(ventana, width=30, height=1, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+lista_cliente.grid(row=2, column=0, columnspan=1, padx=10, pady=200,sticky="s")
 
-frame1=Frame(ventana,bg="lightblue")
-frame1.pack(expand=True,fill="both")
-
-
-frame3=Frame(ventana,bg="lightblue")
-frame3.pack(expand=True,fill="both")
-
-
-#-------------/FRAME 2 |----------------------------------------------
-
-frame2=Frame(ventana,bg="lightblue")
-frame2.pack(expand=True,fill="both")
-
-
-
-
-
-
-
-
-
-# imagen de fondo
-#logo = Image.open("MiniProyectoSpa\Imagenes\spalogo.png")
-#logo = logo.resize((1000, 800))
-#logo_fondo = ImageTk.PhotoImage(logo)
-#va eso   image=logo_fondo,
-
-#---------------------------VARIABLES------------------------------------
-
-#--------------------------------logica -----------------------------------
-#----------for anidado----------------------------------------------------
-#----------Agregar-------------------
-
-def guardado_datos_clientes():
-    nombra="| "+manos.get()+" | "+pies.get()+" | "+cutis.get()+" | "+masaje.get()+"| "
-    but =nombre_cliente.get()
-    buta=""
-    vari=(but,nombra, buta)
-    nombre_cliente.set("")
-    manos.set("")
-    pies.set("")
-    cutis.set("")
-    masaje.set("")
-    return vari
-#-----------------AGREAGAR LISTA-----------------------------
-
-def agregar():
-
-    tablaa.insert("","0", values=(guardado_datos_clientes()))
-
-#---------------------------------eliminar-------------------------------------
 def eliminar_tarea():
-    varSeleccionado = tablaa.selection()
-    if varSeleccionado:
-        tablaa.delete(varSeleccionado)
+    seleccion = lista_cliente.curselection()
+    if seleccion:
+        lista_cliente.delete(seleccion)
 
+boton_eliminar = tk.Button(ventana, text='✖', command=eliminar_tarea, font=("Arial", 10,), justify="center", background="lightblue", borderwidth=3, width=2, height=1)
+boton_eliminar.grid(row=2, column=1, columnspan=1, padx=10, pady=200,sticky="s")
 
-#--------------------------------RELOJ---------------------------------------
+# Reloj
+reloj = tk.Label(ventana, font=('Arial', 45, "bold"), bg='lightblue', fg='black')
 
 def hora():
-    tiempo_actual = time.strftime('%H: %M: %S')
+    tiempo_actual = time.strftime('%H:%M:%S')
     reloj.config(text=tiempo_actual)
     ventana.after(1000, hora)
 
-#***************************************************************************
-
-#-------------MENU----------------------------------------------------------
-
-
-
-#----------------BOTONES ------------------------------------------------------
-
-#----------------agregar-------------------------------------------------------
-boton_agregar = tk.Button(frame3, text="✔", command=agregar, font=("Arial", 10),
-                          background="lightblue", borderwidth=3, width=2, height=1)
-boton_agregar.grid(row=3, column=0, columnspan=1, padx=10, pady=10)
-
-#----------------eliminar-----------------------------------------------------
-boton_eliminar = tk.Button(frame2, text="✖", command=eliminar_tarea, font=("Arial", 10),
-                          background="lightblue", borderwidth=3, width=2, height=1)
-boton_eliminar.grid(row=6, column=0, columnspan=1, padx=10, pady=10)
-
-#***********************************************************************************************
-
-#----------------menu--------------------------------------------------------
-boton_menu = tk.Menubutton(frame3, text='Servicios Principales', relief=tk.RAISED, width=30, height=1,
-                           font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-boton_menu.grid(row=0, column=0,)
-#---------------menu extras----------------------------------------------------
-extras_menu = tk.Menubutton(frame3, text='extras', relief=tk.RAISED, width=30, height=1,
-                           font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-extras_menu.grid(row=2, column=0, padx=10, pady=10)
-
-#********************************************************************************************************************
-
-#------------------ cajas -------------------------------------------------------
-manos=ttk.Combobox(frame3,values=Manos,state="readonly")
-manos.grid(row=0,column=1)
-#------------------  -------------------------------------------------------
-pies=ttk.Combobox(frame3,values=Pies,state="readonly")
-pies.grid(row=0,column=2)
-#------------------  -------------------------------------------------------
-cutis=ttk.Combobox(frame3,values=Cutis,state="readonly")
-cutis.grid(row=0,column=3)
-#------------------  -------------------------------------------------------
-masaje=ttk.Combobox(frame3,values=Masajes,state="readonly")
-masaje.grid(row=0,column=4)
-#------------------------------------------------------------------------------
-"""
-codigo a restructurar 
-"""
-barra_menu = tk.Menu(ventana )
-ventana.config(menu=barra_menu)
-menu_principal = tk.Menu(barra_menu)
-barra_menu.add_cascade(label ='Extras', menu=menu_principal)
-submenu0 = tk.Menu(menu_principal)
-menu_principal.add_cascade(label ='Masajista', menu=submenu0)
-submenu0.add_command(label = 'Femenino')
-submenu0.add_command(label = 'Masculino')
-
-submenu1 = tk.Menu(menu_principal)
-menu_principal.add_cascade(label ='Comida', menu=submenu1)
-submenu1.add_command(label = 'Barra de Cereal')
-submenu1.add_command(label =  'Mix frutos secos')
-submenu2 = tk.Menu(menu_principal)
-submenu2 = tk.Menu(menu_principal)
-menu_principal.add_cascade(label =
-'Bebida', menu=submenu2)
-submenu2.add_command(label = 'Jamaica')
-submenu2.add_command(label = 'Tamarindo')
-#--------------------------------------------------------------------------------------
-
-
-
-#------------------------------------------------------------------------
-
-
-#-----------------------------------------------------------------------------
-#--------------Tabla----------------------------------------------------------
-tablaa=ttk.Treeview(frame2,columns=("co1","co2","co3"),show="headings")
-tablaa.grid(row=0,column=0)
-tablaa.heading("co3",text="extras")
-tablaa.heading("co1",text="nombre")
-tablaa.heading("co2",text="servicios")
-
-#-----------------nombre-------------------------------------------------------------
-
-nombre_cliente = tk.StringVar()
-ingreso_cliente = tk.Entry(frame1, width=30, textvariable=nombre_cliente, font=("Arial", 14, "bold"),background="lightblue")
-ingreso_cliente.grid(row=0, column=0, columnspan=1, padx=10, pady=10)
-nombre_cliente.set("Nombre ")
-
-#---------------RELOJ-------------------------------------------------------------------------
-
-reloj = tk.Label(frame1, font=('Arial', 45), bg='lightblue', fg='black')
-reloj.grid(row=0, column=1, columnspan=1, padx=100, pady=10)
+reloj.grid(row=0, column=3, columnspan=1, padx=200, pady=10,sticky="w")
 hora()
 
-
-#---------Scroll var---------
-barra_despalce=ttk.Scrollbar(frame2,orient="vertical",command=tablaa.yview)
-tablaa.config(yscrollcommand=barra_despalce.set)
-barra_despalce.grid(row=0,column=2,sticky="ns")
-barra_despalce.config(command=tablaa.yview)
-
+# Temporizador
+tiempo_total = 0
+label_tiempo = tk.Label(ventana, text="00:00:00", font=("Arial", 45, "bold"), bg="lightblue",borderwidth=3)
+# label_tiempo.grid(row=2, column=4, columnspan=1, padx=200, pady=300)
+label_tiempo.grid(row=3, column=3, columnspan=1, padx=200, pady=0,sticky="ne")
 
 
+# Función para actualizar el temporizador
+def actualizar_tiempo():
+    global tiempo_total
+    if tiempo_total > 0:
+        tiempo_total -= 1
+        horas, resto = divmod(tiempo_total, 3600)  # Calcula horas y el resto en segundos
+        minutos, segundos = divmod(resto, 60)     # Calcula minutos y segundos a partir del resto
+        label_tiempo.config(text=f"{horas:02}:{minutos:02}:{segundos:02}")
+        ventana.after(1000, actualizar_tiempo)
+    else:
+        label_tiempo.config(text="00:00:00")
 
+# Función para iniciar el temporizador
+def iniciar_temporizador():
+    actualizar_tiempo()
+
+# Botón para iniciar el temporizador
+boton_iniciar = tk.Button(ventana, text="▶", command=iniciar_temporizador, font=("Arial", 26, "bold"), bg="lightblue", borderwidth=3)
+# boton_iniciar.grid(row=2, column=2, columnspan=1, padx=0, pady=100)
+boton_iniciar.grid(row=3, column=3, columnspan=1, padx=150, pady=0,sticky="nw")
+
+# agregar tiempo al temporizador
+def agregar_tiempo(valor):
+    global tiempo_total
+    tiempo_total +=(valor+5) * 60 
+    horas, resto = divmod(tiempo_total, 3600)
+    minutos, segundos = divmod(resto, 60)
+    label_tiempo.config(text=f"{horas:02}:{minutos:02}:{segundos:02}")
+
+# Menú desplegable de servicios
+boton_menu = tk.Menubutton(ventana, text='Servicios Principales', relief=tk.RAISED, width=30, height=1, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+boton_menu.grid(row=1, column=0, padx=20, pady=20)
+
+menu_principal = tk.Menu(boton_menu, tearoff=0, relief=tk.RAISED, font=("Arial", 14, "bold"), background="lightblue", borderwidth=3)
+boton_menu.config(menu=menu_principal)
+
+servicios = {'Manos': Manos, 'Pies': Pies, 'Cutis': Cutis, 'Masajes': Masajes}
+
+for categoria, opciones in servicios.items():
+    submenu = tk.Menu(menu_principal, tearoff=0, relief=tk.RAISED, font=("Arial", 14, "bold"), background="lightblue", borderwidth=3)
+    menu_principal.add_cascade(label=categoria, menu=submenu)
+
+    for llave, valor in opciones.items():
+        submenu.add_command(label=f"{llave}: {valor} minutos", command=lambda valor=valor: agregar_tiempo(valor))
 
 ventana.mainloop()
