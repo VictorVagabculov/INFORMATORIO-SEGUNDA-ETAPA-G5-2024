@@ -64,13 +64,13 @@ label_tiempo.grid(row=3, column=3, columnspan=1, padx=200, pady=0, sticky="ne")
 
 # Etiqueta para la hora de salida
 label_hora_salida = tk.Label(ventana, text="Hora de salida: --:--:--", font=("Arial", 18, "bold"), bg="lightblue", fg='black')
-label_hora_salida.grid(row=4, column=3, columnspan=1, padx=200, pady=10, sticky="nw")
+label_hora_salida.grid(row=2, column=3, columnspan=1, padx=200, pady=10, sticky="sw")
 
 # Función para calcular la hora de salida
 def calcular_hora_salida():
-    tiempo_actual = time.time()  # Obtiene la hora actual en segundos desde epoch
-    tiempo_salida = tiempo_actual + tiempo_total  # Suma el tiempo del temporizador
-    hora_salida = time.strftime('%H:%M:%S', time.localtime(tiempo_salida))  # Formatea la hora de salida
+    tiempo_actual = time.time() 
+    tiempo_salida = tiempo_actual + tiempo_total 
+    hora_salida = time.strftime('%H:%M:%S', time.localtime(tiempo_salida)) 
     label_hora_salida.config(text=f"Hora de salida: {hora_salida}")
 
 # Función para actualizar el temporizador
