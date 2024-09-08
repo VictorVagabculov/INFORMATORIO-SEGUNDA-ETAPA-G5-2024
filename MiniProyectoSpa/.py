@@ -1,4 +1,5 @@
 // temporizador.js  
+
 function obtenerHoraActual() {  
     const ahora = new Date();  
     return ahora.getHours() + ':' + ahora.getMinutes() + ':' + ahora.getSeconds();  
