@@ -55,9 +55,6 @@ def hora():
 
 reloj.grid(row=0, column=3, columnspan=1, padx=200, pady=10,sticky="w")
 hora() 
-# Reloj 
-
-
 
 # Temporizador
 tiempo_total = 0
@@ -65,6 +62,15 @@ label_tiempo = tk.Label(ventana, text="00:00:00", font=("Arial", 45, "bold"), bg
 # label_tiempo.grid(row=2, column=4, columnspan=1, padx=200, pady=300)
 label_tiempo.grid(row=3, column=3, columnspan=1, padx=200, pady=0,sticky="ne")
 
+#Hora de salida
+label_hora_salida=tk.Label(ventana,text="Hora de salida:--:--:--",font=("Calibri",20,"bold"),bg="lightublue",fg="black")
+label_hora_salida.grid(rom=2,column=3,columnspan=1,padx=200,pady=10,sticky="sm")
+#Calcular la hora de salida
+def calcular_hora_salida():
+    tiempo_actual -time.time()#hora actual en segundos
+    tiempo_salida= tiempo_actual +tiempo_total #suma de tiempo en temporizador
+    hora_salida= time.strftime('%H:%M:%S',time.localtime(tiempo_salida))#reinicia hora de salida
+    label_hora_salida.config(text="Hora de salida:(hora_salida)")
 
 # Función para actualizar el temporizador
 def actualizar_tiempo():
