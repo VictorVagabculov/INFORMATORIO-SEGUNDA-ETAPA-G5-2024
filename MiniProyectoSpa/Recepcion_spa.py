@@ -42,9 +42,9 @@ lista_cliente.place(x=10, y=400)
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Boton de eliminar
 def eliminar_tarea():
-    seleccion = lista_cliente.curselection()
+    seleccion = lista_cliente.curselection() or lista_servicios.curselection()
     if seleccion:
-        lista_cliente.delete(seleccion)
+        lista_cliente.delete(seleccion) or lista_servicios.delete(seleccion)
 
 boton_eliminar = tk.Button(ventana, text='✖', command=eliminar_tarea, font=("Arial", 10,), justify="center", background="lightblue", borderwidth=3, width=2, height=1)
 boton_eliminar.place(x=360, y=400)   
@@ -125,7 +125,7 @@ for categoria, opciones in servicios.items():
     menu_principal_servicios.add_cascade(label=categoria, menu=submenu_servicios)
 
     for llave, valor in opciones.items():
-        submenu_servicios.add_command(label=f"{llave}: {valor} minutos", command=lambda valor=valor: agregar_tiempo(valor))
+        submenu_servicios.add_command(label=f"{llave}: {valor} minutos", command=lambda valor=valor, llave=llave: (agregar_tiempo(valor), lista_servicios.insert(tk.END, llave)))
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Menú desplegable de extras
@@ -142,13 +142,17 @@ for categoria, opciones in Extras.items():
     menu_principal_extras.add_cascade(label=categoria, menu=submenu_extras)
 
     for extra in opciones:
-        submenu_extras.add_command(label=f"{extra}",command=lambda: lista_servicios.insert(tk.END,extra)) #ACA HAY UN ERROR ##################################
+        submenu_extras.add_command(label=f"{extra}",command=lambda extra=extra: lista_extras.insert(tk.END,extra)) #ACA HAY UN ERROR ##################################
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Servicios seleccionados
 
-lista_servicios = tk.Listbox(ventana,selectmode=tk.SINGLE, width=60, height=15,background="lightblue")
+lista_servicios = tk.Listbox(ventana,selectmode=tk.SINGLE, width=25, height=10,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
 lista_servicios.place(x=10, y=450)
+
+# extras seleccionados
+lista_extras = tk.Listbox(ventana,selectmode=tk.SINGLE, width=20, height=10,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+lista_extras.place(x=300, y=450)
 
 
 ventana.mainloop()
