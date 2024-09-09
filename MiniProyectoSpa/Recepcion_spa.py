@@ -54,7 +54,7 @@ def hora():
     ventana.after(1000, hora)
 
 reloj.grid(row=0, column=3, columnspan=1, padx=200, pady=10,sticky="w")
-hora()
+hora() 
 
 # Temporizador
 tiempo_total = 0
@@ -62,14 +62,24 @@ label_tiempo = tk.Label(ventana, text="00:00:00", font=("Arial", 45, "bold"), bg
 # label_tiempo.grid(row=2, column=4, columnspan=1, padx=200, pady=300)
 label_tiempo.grid(row=3, column=3, columnspan=1, padx=200, pady=0,sticky="ne")
 
+#Hora de salida
+label_hora_salida=tk.Label(ventana,text="Hora de salida:--:--:--",font=("Arial", 20, "bold"),bg="lightblue",fg="black")
+label_hora_salida.grid(row=2,column=3,columnspan=1,padx=200,pady=10,sticky="sw")
+
+#Calcular la hora de salida
+def calcular_hora_salida():
+    tiempo_actual= time.time()#hora actual en segundos
+    tiempo_salida= tiempo_actual + tiempo_total #suma de tiempo en temporizador
+    hora_salida= time.strftime('%H:%M:%S',time.localtime(tiempo_salida))#reinicia hora de salida
+    label_hora_salida.config(text=f"Hora de salida:{hora_salida}")
 
 # Función para actualizar el temporizador
 def actualizar_tiempo():
     global tiempo_total
     if tiempo_total > 0:
         tiempo_total -= 1
-        horas, resto = divmod(tiempo_total, 3600)  # Calcula horas y el resto en segundos
-        minutos, segundos = divmod(resto, 60)     # Calcula minutos y segundos a partir del resto
+        horas, resto = divmod(tiempo_total, 3600)
+        minutos, segundos = divmod(resto, 60)
         label_tiempo.config(text=f"{horas:02}:{minutos:02}:{segundos:02}")
         ventana.after(1000, actualizar_tiempo)
     else:
@@ -78,7 +88,7 @@ def actualizar_tiempo():
 # Función para iniciar el temporizador
 def iniciar_temporizador():
     actualizar_tiempo()
-
+    calcular_hora_salida()
 # Botón para iniciar el temporizador
 boton_iniciar = tk.Button(ventana, text="▶", command=iniciar_temporizador, font=("Arial", 26, "bold"), bg="lightblue", borderwidth=3)
 # boton_iniciar.grid(row=2, column=2, columnspan=1, padx=0, pady=100)
