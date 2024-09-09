@@ -42,9 +42,9 @@ lista_cliente.place(x=10, y=400)
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Boton de eliminar
 def eliminar_tarea():
-    seleccion = lista_cliente.curselection() or lista_servicios.curselection()
+    seleccion = lista_cliente.curselection() or lista_servicios.curselection() or lista_extras.curselection()
     if seleccion:
-        lista_cliente.delete(seleccion) or lista_servicios.delete(seleccion)
+        lista_cliente.delete(seleccion) or lista_servicios.delete(seleccion) or lista_extras.delete(seleccion)
 
 boton_eliminar = tk.Button(ventana, text='✖', command=eliminar_tarea, font=("Arial", 10,), justify="center", background="lightblue", borderwidth=3, width=2, height=1)
 boton_eliminar.place(x=360, y=400)   

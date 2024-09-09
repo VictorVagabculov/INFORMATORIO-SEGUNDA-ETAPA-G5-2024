@@ -1,3 +1,45 @@
-Masajeadores=['Hombro', 'Espalda', 'Pies','manos','Esalda alta','cintura','esalda media']
-Comida=['Barra de Cereal', 'Mix Furtos rojo', 'Mix frutos secos', 'Barra de arroz', 'Ensalda de frutas', 'Mix energetico', 'bastones de zanahoria']
-Bebida=['Jamaica','Limón','Tamarindo','té chai','yogur','agua mineral','cafe', 'agua tonica', 'lima limon','coca zero']
+Masajeadores=['Hombros', 'Espalda completa', 'Pies','Espalda alta','cintura','espalda media']
+Comida = [
+    "Ensalada de Frutas",
+    "Yogur con Granola",
+    "Tostadas Integrales con Aguacate",
+    "Wrap de Pollo",
+    "Wrap Vegetariano",
+    "Sándwich de Pavo",
+    "Sándwich de Vegetales",
+    "Barra de Cereales",
+    "Mix de Frutos Secos",
+    "Galletas de Avena",
+    "Muffins de Zanahoria",
+    "Muffins de Blueberry",
+    "Palitos de Zanahoria y Apio con Hummus",
+    "Ensalada César",
+    "Ensalada de Quinoa",
+    "Fruta Fresca (manzana, plátano, uvas)",
+    "Sushi Rolls",
+    "Tostadas con Hummus y Pepino",
+    "Mini Croissants de Jamón y Queso",
+    "Brochetas de Frutas"
+]
+Bebida = [
+    "Agua Mineral",
+    "Agua Saborizada",
+    "Té Verde",
+    "Té de Hierbas",
+    "Café Espresso",
+    "Café con Leche",
+    "Capuchino",
+    "Latte Macchiato",
+    "Jugo de Naranja",
+    "Jugo de Manzana",
+    "Jugo Detox (Verde)",
+    "Batido de Frutas",
+    "Limonada Natural",
+    "Limonada de Coco",
+    "Smoothie de Fresas",
+    "Smoothie de Mango",
+    "Agua de Coco",
+    "Té Helado",
+    "Infusión de Frutas",
+    "Refresco sin Azúcar"
+]
