@@ -142,15 +142,23 @@ for categoria, opciones in Extras.items():
     menu_principal_extras.add_cascade(label=categoria, menu=submenu_extras)
 
     for extra in opciones:
-        submenu_extras.add_command(label=f"{extra}",command=lambda extra=extra: lista_extras.insert(tk.END,extra)) #ACA HAY UN ERROR ##################################
+        submenu_extras.add_command(label=f"{extra}",command=lambda extra=extra: lista_extras.insert(tk.END,extra))
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Servicios seleccionados
+frame_servicios = tk.Frame(ventana)
+frame_servicios.place(x=10, y=450)
 
-lista_servicios = tk.Listbox(ventana,selectmode=tk.SINGLE, width=25, height=10,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-lista_servicios.place(x=10, y=450)
+scrollbar = tk.Scrollbar(frame_servicios,orient=tk.HORIZONTAL)
+scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
-# extras seleccionados
+lista_servicios = tk.Listbox(frame_servicios,selectmode=tk.SINGLE, width=24, height=10,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+lista_servicios.pack(side=tk.LEFT, fill=tk.BOTH)
+
+lista_servicios.config(xscrollcommand=scrollbar.set)
+scrollbar.config(command=lista_servicios.xview)
+
+# Extras seleccionados
 lista_extras = tk.Listbox(ventana,selectmode=tk.SINGLE, width=20, height=10,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
 lista_extras.place(x=300, y=450)
 
