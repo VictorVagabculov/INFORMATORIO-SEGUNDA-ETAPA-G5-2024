@@ -33,7 +33,7 @@ def agregar_cliente():
         lista_cliente.insert(tk.END, tarea)
     ingreso_cliente.delete(0, tk.END)
 
-boton_agregar = tk.Button(ventana, text="✔", command=agregar_cliente, font=("Arial", 10), justify="center", background="lightblue", borderwidth=3, width=2, height=1)
+boton_agregar = tk.Button(ventana, text="Agregar Cliente", command=agregar_cliente, font=("Arial", 10), justify="center", background="lightblue", borderwidth=3, width=15, height=1)
 boton_agregar.place(x=360, y=10)   
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Nombre del cliente
@@ -46,8 +46,8 @@ def eliminar_tarea():
     if seleccion:
         lista_cliente.delete(seleccion) or lista_servicios.delete(seleccion) or lista_extras.delete(seleccion)
 
-boton_eliminar = tk.Button(ventana, text='✖', command=eliminar_tarea, font=("Arial", 10,), justify="center", background="lightblue", borderwidth=3, width=2, height=1)
-boton_eliminar.place(x=360, y=400)   
+boton_eliminar = tk.Button(ventana, text='Eliminar Seleccion', command=eliminar_tarea, font=("Arial", 10,), justify="center", background="lightblue", borderwidth=3, width=18, height=1)
+boton_eliminar.place(x=70, y=730)   
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Reloj
@@ -98,8 +98,8 @@ def iniciar_temporizador():
     boton_iniciar.config(state=tk.DISABLED)
 
 # Botón para iniciar el temporizador
-boton_iniciar = tk.Button(ventana, text="▶", command=iniciar_temporizador, font=("Arial", 28, "bold"), bg="lightblue", borderwidth=3)
-boton_iniciar.place(x=645, y=500)   
+boton_iniciar = tk.Button(ventana, text="Iniciar Servicio", command=iniciar_temporizador, font=("Arial", 20, "bold"), bg="lightblue", borderwidth=3)
+boton_iniciar.place(x=700, y=650)   
 
 # Agregar tiempo al temporizador
 def agregar_tiempo(valor):
