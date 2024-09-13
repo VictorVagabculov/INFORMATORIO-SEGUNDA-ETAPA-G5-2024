@@ -40,11 +40,17 @@ boton_agregar.place(x=360, y=10)
 lista_cliente = tk.Listbox(ventana, width=30, height=1, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
 lista_cliente.place(x=10, y=400)   
 # ----------------------------------------------------------------------------------------------------------------------------------------------
+tiempos_servicios = {}
+
 # Boton de eliminar
 def eliminar_tarea():
-    seleccion = lista_cliente.curselection() or lista_servicios.curselection() or lista_extras.curselection()
-    if seleccion:
-        lista_cliente.delete(seleccion) or lista_servicios.delete(seleccion) or lista_extras.delete(seleccion)
+    seleccion = lista_servicios.curselection()
+    if seleccion:   
+        servicio = lista_servicios.get(seleccion)   
+        if servicio in tiempos_servicios:
+            restar_tiempo(tiempos_servicios[servicio])
+            del tiempos_servicios[servicio]
+        lista_servicios.delete(seleccion)
 
 boton_eliminar = tk.Button(ventana, text='✖', command=eliminar_tarea, font=("Arial", 10,), justify="center", background="lightblue", borderwidth=3, width=2, height=1)
 boton_eliminar.place(x=360, y=400)   
@@ -78,6 +84,18 @@ def actualizar_tiempo():
         ventana.after(1000, actualizar_tiempo)
     else:
         label_tiempo.config(text="00:00:00")
+
+# Función para restar tiempo del temporizador
+def restar_tiempo(valor):
+    global tiempo_total
+    tiempo_total -= valor * 60
+    if tiempo_total < 0:
+        tiempo_total = 0
+    horas, resto = divmod(tiempo_total, 3600)
+    minutos, segundos = divmod(resto, 60)
+    label_tiempo.config(text=f"{horas:02}:{minutos:02}:{segundos:02}")
+    calcular_hora_salida()
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 # Hora de salida
 # Etiqueta para la hora de salida
@@ -90,6 +108,7 @@ def calcular_hora_salida():
     tiempo_salida = tiempo_actual + tiempo_total 
     hora_salida = time.strftime('%H:%M:%S', time.localtime(tiempo_salida)) 
     label_hora_salida.config(text=f"Hora de salida: {hora_salida}")
+
 # ------------------------------------------------------------------------------------------------------------------------------------------------
 # Función para iniciar el temporizador
 def iniciar_temporizador():
@@ -101,14 +120,15 @@ def iniciar_temporizador():
 boton_iniciar = tk.Button(ventana, text="▶", command=iniciar_temporizador, font=("Arial", 28, "bold"), bg="lightblue", borderwidth=3)
 boton_iniciar.place(x=645, y=500)   
 
-# Agregar tiempo al temporizador
-def agregar_tiempo(valor):
+# Agregar tiempo al temporizador y al diccionario de tiempos de servicios
+def agregar_tiempo(valor, llave):
     global tiempo_total
     tiempo_total += (valor + 5) * 60 
     horas, resto = divmod(tiempo_total, 3600)
     minutos, segundos = divmod(resto, 60)
     label_tiempo.config(text=f"{horas:02}:{minutos:02}:{segundos:02}")
     calcular_hora_salida()
+    tiempos_servicios[llave] = valor + 5
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Menú desplegable de servicios
@@ -125,7 +145,10 @@ for categoria, opciones in servicios.items():
     menu_principal_servicios.add_cascade(label=categoria, menu=submenu_servicios)
 
     for llave, valor in opciones.items():
-        submenu_servicios.add_command(label=f"{llave}: {valor} minutos", command=lambda valor=valor, llave=llave: (agregar_tiempo(valor), lista_servicios.insert(tk.END, llave)))
+        submenu_servicios.add_command(
+            label=f"{llave}: {valor} minutos", 
+            command=lambda valor=valor, llave=llave: (agregar_tiempo(valor, llave), lista_servicios.insert(tk.END, llave))
+        )
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Menú desplegable de extras
@@ -169,9 +192,4 @@ lista_extras_label.place(x=300, y=440)
 lista_extras = tk.Listbox(ventana,selectmode=tk.SINGLE, width=20, height=10,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
 lista_extras.place(x=300, y=470)
 
-
 ventana.mainloop()
-
-
-# colocar nombre a las etiquetas de servicio seleccionado y extras seleccionados.
-# temporizador, hora de salida, servicios seleccionados y extras seleccionados van en otra ventana despues de ejecutar el play.
