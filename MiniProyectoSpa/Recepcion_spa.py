@@ -25,6 +25,31 @@ nombre_cliente = tk.StringVar()
 ingreso_cliente = tk.Entry(ventana, width=30, textvariable=nombre_cliente, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
 ingreso_cliente.place(x=10, y=10)   
 nombre_cliente.set("Nombre del Cliente")
+def limpiar_nombre(event):
+    if nombre_cliente.get() == "Nombre del Cliente":  # Si el valor es el predeterminado
+        nombre_cliente.set("")  # Limpiar el Entry
+ingreso_cliente.bind("<Key>", limpiar_nombre)    
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+#Ingreso el numero de BOX
+
+numero_box = tk.StringVar()
+ingreso_box = tk.Entry(ventana, width=6, textvariable=numero_box, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+ingreso_box.place(x=400, y=10)   
+numero_box.set("Box n°")
+
+# Función para limpiar el campo de entrada al escribir la primera vez
+def limpiar_numero(event):
+    if numero_box.get()== "Box n°":
+        numero_box.set("")
+ingreso_box.bind("<Key>", limpiar_numero)
+# Función para validar que solo se ingresen números
+def solo_numeros(char):
+    return char.isdigit() or char == ""  # Permitir números y el vacío (cuando se borra el texto)
+
+# Configurar la validación
+validacion_numerica = ventana.register(solo_numeros)
+ingreso_box.config(validate="key", validatecommand=(validacion_numerica, '%P'))  # %P es el contenido actual del Entry después del cambio
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 # Botón para agregar cliente
 def agregar_cliente():
@@ -33,21 +58,41 @@ def agregar_cliente():
         lista_cliente.insert(tk.END, tarea)
     ingreso_cliente.delete(0, tk.END)
 
-boton_agregar = tk.Button(ventana, text="Agregar Cliente", command=agregar_cliente, font=("Arial", 10), justify="center", background="lightblue", borderwidth=3, width=15, height=1)
-boton_agregar.place(x=360, y=10)   
+boton_agregar = tk.Button(ventana, text="Agregar Cliente", command=agregar_cliente, font=("Arial", 10), justify="center", background="lightblue", borderwidth=3, width=15, height=1, state=tk.DISABLED)
+boton_agregar.place(x=500, y=10)   
+
+def validar_entrada(*args): 
+    if nombre_cliente.get().strip():  # Si no está vacío, habilitar el botón
+        boton_agregar.config(state=tk.NORMAL)
+    else:  # Si está vacío, deshabilitar el botón
+        boton_agregar.config(state=tk.DISABLED)
+
+# Monitorea cambios en el campo de texto
+nombre_cliente and numero_box.trace_add("write", validar_entrada)
+
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Nombre del cliente
+lista_cliente_label= tk.Label(text=("Cliente"),width=7, height=1,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+lista_cliente_label.place(x=10, y=370)
 lista_cliente = tk.Listbox(ventana, width=30, height=1, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
 lista_cliente.place(x=10, y=400)   
 # ----------------------------------------------------------------------------------------------------------------------------------------------
+# Numero de box
+lista_cliente_label= tk.Label(text=("Box"),width=4, height=1,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+lista_cliente_label.place(x=348, y=400)
+
+numero_box_cliente = tk.Listbox(ventana, width=4, height=1, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+numero_box_cliente.place(x=400, y=400)   
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
 # Boton de eliminar
 def eliminar_tarea():
-    seleccion = lista_cliente.curselection() or lista_servicios.curselection() or lista_extras.curselection()
+    seleccion = lista_cliente.curselection() or lista_servicios.curselection() or lista_extras.curselection() or numero_box_cliente.curselection()
     if seleccion:
-        lista_cliente.delete(seleccion) or lista_servicios.delete(seleccion) or lista_extras.delete(seleccion)
+        lista_cliente.delete(seleccion) or lista_servicios.delete(seleccion) or lista_extras.delete(seleccion) or numero_box_cliente.delete(seleccion)
 
 boton_eliminar = tk.Button(ventana, text='Eliminar Seleccion', command=eliminar_tarea, font=("Arial", 10,), justify="center", background="lightblue", borderwidth=3, width=18, height=1)
-boton_eliminar.place(x=70, y=730)   
+boton_eliminar.place(x=70, y=730)
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Reloj

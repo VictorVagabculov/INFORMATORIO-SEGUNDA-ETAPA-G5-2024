@@ -8,39 +8,19 @@ ventana.geometry("500x400")
 ventana.configure(background="lightblue")
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
-# Ingreso de cliente
-nombre_cliente = tk.StringVar()
+# Ingreso de número (solo números permitidos)
+numero_box = tk.StringVar()  # Utiliza StringVar para mayor flexibilidad en la validación
+ingreso_box = tk.Entry(ventana, width=6, textvariable=numero_box, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+ingreso_box.place(x=400, y=10)   
+numero_box.set("Box n°")
 
-ingreso_cliente = tk.Entry(ventana, width=30, textvariable=nombre_cliente, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-ingreso_cliente.place(x=10, y=10)
-nombre_cliente.set("Nombre del Cliente")
+# Función para validar que solo se ingresen números
+def solo_numeros(char):
+    return char.isdigit() or char == ""  # Permitir números y el vacío (cuando se borra el texto)
 
-# ----------------------------------------------------------------------------------------------------------------------------------------------
-# Botón para agregar cliente
-def agregar_cliente():
-    tarea = ingreso_cliente.get()
-    if tarea:
-        lista_cliente.insert(tk.END, tarea)
-        ingreso_cliente.delete(0, tk.END)
-
-boton_agregar = tk.Button(ventana, text="✔", command=agregar_cliente, font=("Arial", 10), justify="center", background="lightblue", borderwidth=3, width=2, height=1, state=tk.DISABLED)
-boton_agregar.place(x=360, y=10)
-
-# ----------------------------------------------------------------------------------------------------------------------------------------------
-# Nombre del cliente
-lista_cliente = tk.Listbox(ventana, width=30, height=1, font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-lista_cliente.place(x=10, y=50)
-
-# ----------------------------------------------------------------------------------------------------------------------------------------------
-# Función para habilitar/deshabilitar el botón según el contenido del campo de entrada
-def validar_entrada(*args):
-    if nombre_cliente.get().strip():  # Si no está vacío, habilitar el botón
-        boton_agregar.config(state=tk.NORMAL)
-    else:  # Si está vacío, deshabilitar el botón
-        boton_agregar.config(state=tk.DISABLED)
-
-# Monitorea cambios en el campo de texto
-nombre_cliente.trace_add("write", validar_entrada)
+# Configurar la validación
+validacion_numerica = ventana.register(solo_numeros)
+ingreso_box.config(validate="key", validatecommand=(validacion_numerica, '%P'))  # %P es el contenido actual del Entry después del cambio
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 ventana.mainloop()
