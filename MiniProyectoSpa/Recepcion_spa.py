@@ -147,7 +147,10 @@ for categoria, opciones in Extras.items():
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 # Servicios seleccionados
 frame_servicios = tk.Frame(ventana)
-frame_servicios.place(x=10, y=450)
+frame_servicios.place(x=10, y=470)
+
+lista_servicios_label= tk.Label(text=("Servicios seleccionados"),width=22, height=1,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+lista_servicios_label.place(x=10, y=440)
 
 scrollbar = tk.Scrollbar(frame_servicios,orient=tk.HORIZONTAL)
 scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
@@ -159,8 +162,12 @@ lista_servicios.config(xscrollcommand=scrollbar.set)
 scrollbar.config(command=lista_servicios.xview)
 
 # Extras seleccionados
+
+lista_extras_label= tk.Label(text=("Extras seleccionados"),width=18, height=1,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
+lista_extras_label.place(x=300, y=440)
+
 lista_extras = tk.Listbox(ventana,selectmode=tk.SINGLE, width=20, height=10,font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-lista_extras.place(x=300, y=450)
+lista_extras.place(x=300, y=470)
 
 
 ventana.mainloop()
