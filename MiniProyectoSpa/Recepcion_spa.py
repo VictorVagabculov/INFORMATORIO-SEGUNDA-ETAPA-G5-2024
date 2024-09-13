@@ -164,3 +164,7 @@ lista_extras.place(x=300, y=450)
 
 
 ventana.mainloop()
+
+
+# colocar nombre a las etiquetas de servicio seleccionado y extras seleccionados.
+# temporizador, hora de salida, servicios seleccionados y extras seleccionados van en otra ventana despues de ejecutar el play.
