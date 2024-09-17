@@ -30,3 +30,9 @@ Masajes = {
     "Masaje Tailandés": 90,
     "Masaje Aromaterapia": 60
 }
+
+TEST={
+    "1 Minuto": -4,
+    "30 segundos": -4.5,
+    "10 segundos": -29/6
+}
