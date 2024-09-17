@@ -10,10 +10,10 @@ ventana = tk.Tk()
 ventana.title("Recepción Spa")
 ventana.geometry("1000x800")
 ventana.configure(background="lightblue")
-ventana.iconbitmap("MiniProyectoSpa/Imagenes/spalogonegro.ico")
+ventana.iconbitmap("Imagenes/spalogonegro.ico")
 
 # Imagen de fondo
-logo = Image.open("MiniProyectoSpa/Imagenes/spalogo.png")
+logo = Image.open("Imagenes/spalogo.png")
 logo = logo.resize((1000, 800))
 logo_fondo = ImageTk.PhotoImage(logo)
 label_fondo = tk.Label(ventana, image=logo_fondo, bg="lightblue")
