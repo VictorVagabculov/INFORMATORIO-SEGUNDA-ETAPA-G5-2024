@@ -1,4 +1,4 @@
-Masajeadores=['Hombros', 'Espalda completa', 'Pies','Espalda alta','cintura','espalda media']
+Masajeadores=['Masajeador de Hombros', 'Masajeador de Espalda completa', 'Masajeador de Pies','Masajeador de Espalda alta','Masajeador de cintura','Masajeador de espalda media']
 Comida = [
     "Ensalada de Frutas",
     "Yogur con Granola",

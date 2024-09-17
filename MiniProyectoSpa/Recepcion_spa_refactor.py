@@ -1,191 +1,298 @@
 import tkinter as tk
-from tkinter import PhotoImage
-#from PIL import ImageTk, Image
-from  tkinter import  ttk,Frame
+from PIL import ImageTk, Image
 import time
-
-
 from servicios import *
+from extras import *
 
-# ------------------- ventana-----------
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Ventana principal
 ventana = tk.Tk()
 ventana.title("Recepción Spa")
 ventana.geometry("1000x800")
 ventana.configure(background="lightblue")
+ventana.iconbitmap("MiniProyectoSpa/Imagenes/spalogonegro.ico")
+
+# Imagen de fondo
+logo = Image.open("MiniProyectoSpa/Imagenes/spalogo.png")
+logo = logo.resize((1000, 800))
+logo_fondo = ImageTk.PhotoImage(logo)
+label_fondo = tk.Label(ventana, image=logo_fondo, bg="lightblue")
+label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Ingreso de cliente
+nombre_cliente = tk.StringVar()
+ingreso_cliente = tk.Entry(
+    ventana,
+    width=31,
+    textvariable=nombre_cliente,
+    font=("Arial", 14, "bold"),
+    justify="center",
+    background="lightblue",
+    borderwidth=3,
+)
+ingreso_cliente.place(x=10, y=10)
+nombre_cliente.set("Nombre del Cliente")
 
 
+def limpiar_nombre(event):
+    if nombre_cliente.get() == "Nombre del Cliente":
+        nombre_cliente.set("")
 
 
+ingreso_cliente.bind("<Key>", limpiar_nombre)
 
-#-------------/  FRAME1 |---------------------------------------
-
-frame1=Frame(ventana,bg="lightblue")
-frame1.pack(expand=True,fill="both")
-
-
-frame3=Frame(ventana,bg="lightblue")
-frame3.pack(expand=True,fill="both")
-
-
-#-------------/FRAME 2 |----------------------------------------------
-
-frame2=Frame(ventana,bg="lightblue")
-frame2.pack(expand=True,fill="both")
-
-
-
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Ingreso el numero de BOX
+numero_box = tk.StringVar()
+ingreso_box = tk.Entry(
+    ventana,
+    width=6,
+    textvariable=numero_box,
+    font=("Arial", 14, "bold"),
+    justify="center",
+    background="lightblue",
+    borderwidth=3,
+)
+ingreso_box.place(x=400, y=10)
+numero_box.set("Box n°")
 
 
+def limpiar_numero(event):
+    if numero_box.get() == "Box n°":
+        numero_box.set("")
 
 
+ingreso_box.bind("<Key>", limpiar_numero)
+
+def solo_numeros(char):
+    return char.isdigit() or char == ""
 
 
-# imagen de fondo
-#logo = Image.open("MiniProyectoSpa\Imagenes\spalogo.png")
-#logo = logo.resize((1000, 800))
-#logo_fondo = ImageTk.PhotoImage(logo)
-#va eso   image=logo_fondo,
+validacion_numerica = ventana.register(solo_numeros)
+ingreso_box.config(validate="key", validatecommand=(validacion_numerica, "%P"))
 
-#---------------------------VARIABLES------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Boton de eliminar
+def obtener_tiempo_servicio(nombre_servicio):
+    for categoria, opciones in servicios.items():
+        if nombre_servicio in opciones:
+            return opciones[nombre_servicio]
+    return 0
 
-#--------------------------------logica -----------------------------------
-#----------for anidado----------------------------------------------------
-#----------Agregar-------------------
-
-def guardado_datos_clientes():
-    nombra="| "+manos.get()+" | "+pies.get()+" | "+cutis.get()+" | "+masaje.get()+"| "
-    but =nombre_cliente.get()
-    buta=""
-    vari=(but,nombra, buta)
-    nombre_cliente.set("")
-    manos.set("")
-    pies.set("")
-    cutis.set("")
-    masaje.set("")
-    return vari
-#-----------------AGREAGAR LISTA-----------------------------
-
-def agregar():
-
-    tablaa.insert("","0", values=(guardado_datos_clientes()))
-
-#---------------------------------eliminar-------------------------------------
 def eliminar_tarea():
-    varSeleccionado = tablaa.selection()
-    if varSeleccionado:
-        tablaa.delete(varSeleccionado)
+    global tiempo_total
+    if lista_servicios.curselection():
+        seleccion = lista_servicios.curselection()
+        servicio_eliminado = lista_servicios.get(seleccion)
+        tiempo_a_restar = obtener_tiempo_servicio(servicio_eliminado) * 60
+        tiempo_total -= tiempo_a_restar
+        lista_servicios.delete(seleccion)
+        actualizar_tiempo()  # Actualiza el temporizador después de eliminar
+    elif lista_extras.curselection():
+        seleccion = lista_extras.curselection()
+        lista_extras.delete(seleccion)
 
 
-#--------------------------------RELOJ---------------------------------------
+boton_eliminar = tk.Button(
+    ventana,
+    text="Eliminar Seleccion",
+    command=eliminar_tarea,
+    font=("Arial", 10),
+    justify="center",
+    background="lightblue",
+    borderwidth=3,
+    width=18,
+    height=1,
+)
+boton_eliminar.place(x=70, y=730)
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Reloj
+reloj = tk.Label(ventana, font=("Arial", 45, "bold"), bg="lightblue", fg="black")
+
 
 def hora():
-    tiempo_actual = time.strftime('%H: %M: %S')
+    tiempo_actual = time.strftime("%H:%M:%S")
     reloj.config(text=tiempo_actual)
     ventana.after(1000, hora)
 
-#***************************************************************************
 
-#-------------MENU----------------------------------------------------------
-
-
-
-#----------------BOTONES ------------------------------------------------------
-
-#----------------agregar-------------------------------------------------------
-boton_agregar = tk.Button(frame3, text="✔", command=agregar, font=("Arial", 10),
-                          background="lightblue", borderwidth=3, width=2, height=1)
-boton_agregar.grid(row=3, column=0, columnspan=1, padx=10, pady=10)
-
-#----------------eliminar-----------------------------------------------------
-boton_eliminar = tk.Button(frame2, text="✖", command=eliminar_tarea, font=("Arial", 10),
-                          background="lightblue", borderwidth=3, width=2, height=1)
-boton_eliminar.grid(row=6, column=0, columnspan=1, padx=10, pady=10)
-
-#***********************************************************************************************
-
-#----------------menu--------------------------------------------------------
-boton_menu = tk.Menubutton(frame3, text='Servicios Principales', relief=tk.RAISED, width=30, height=1,
-                           font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-boton_menu.grid(row=0, column=0,)
-#---------------menu extras----------------------------------------------------
-extras_menu = tk.Menubutton(frame3, text='extras', relief=tk.RAISED, width=30, height=1,
-                           font=("Arial", 14, "bold"), justify="center", background="lightblue", borderwidth=3)
-extras_menu.grid(row=2, column=0, padx=10, pady=10)
-
-#********************************************************************************************************************
-
-#------------------ cajas -------------------------------------------------------
-manos=ttk.Combobox(frame3,values=Manos,state="readonly")
-manos.grid(row=0,column=1)
-#------------------  -------------------------------------------------------
-pies=ttk.Combobox(frame3,values=Pies,state="readonly")
-pies.grid(row=0,column=2)
-#------------------  -------------------------------------------------------
-cutis=ttk.Combobox(frame3,values=Cutis,state="readonly")
-cutis.grid(row=0,column=3)
-#------------------  -------------------------------------------------------
-masaje=ttk.Combobox(frame3,values=Masajes,state="readonly")
-masaje.grid(row=0,column=4)
-#------------------------------------------------------------------------------
-"""
-codigo a restructurar 
-"""
-barra_menu = tk.Menu(ventana )
-ventana.config(menu=barra_menu)
-menu_principal = tk.Menu(barra_menu)
-barra_menu.add_cascade(label ='Extras', menu=menu_principal)
-submenu0 = tk.Menu(menu_principal)
-menu_principal.add_cascade(label ='Masajista', menu=submenu0)
-submenu0.add_command(label = 'Femenino')
-submenu0.add_command(label = 'Masculino')
-
-submenu1 = tk.Menu(menu_principal)
-menu_principal.add_cascade(label ='Comida', menu=submenu1)
-submenu1.add_command(label = 'Barra de Cereal')
-submenu1.add_command(label =  'Mix frutos secos')
-submenu2 = tk.Menu(menu_principal)
-submenu2 = tk.Menu(menu_principal)
-menu_principal.add_cascade(label =
-'Bebida', menu=submenu2)
-submenu2.add_command(label = 'Jamaica')
-submenu2.add_command(label = 'Tamarindo')
-#--------------------------------------------------------------------------------------
-
-
-
-#------------------------------------------------------------------------
-
-
-#-----------------------------------------------------------------------------
-#--------------Tabla----------------------------------------------------------
-tablaa=ttk.Treeview(frame2,columns=("co1","co2","co3"),show="headings")
-tablaa.grid(row=0,column=0)
-tablaa.heading("co3",text="extras")
-tablaa.heading("co1",text="nombre")
-tablaa.heading("co2",text="servicios")
-
-#-----------------nombre-------------------------------------------------------------
-
-nombre_cliente = tk.StringVar()
-ingreso_cliente = tk.Entry(frame1, width=30, textvariable=nombre_cliente, font=("Arial", 14, "bold"),background="lightblue")
-ingreso_cliente.grid(row=0, column=0, columnspan=1, padx=10, pady=10)
-nombre_cliente.set("Nombre ")
-
-#---------------RELOJ-------------------------------------------------------------------------
-
-reloj = tk.Label(frame1, font=('Arial', 45), bg='lightblue', fg='black')
-reloj.grid(row=0, column=1, columnspan=1, padx=100, pady=10)
+reloj.place(x=700, y=10)
 hora()
 
-
-#---------Scroll var---------
-barra_despalce=ttk.Scrollbar(frame2,orient="vertical",command=tablaa.yview)
-tablaa.config(yscrollcommand=barra_despalce.set)
-barra_despalce.grid(row=0,column=2,sticky="ns")
-barra_despalce.config(command=tablaa.yview)
-
-
-
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Temporizador
+tiempo_total = 0
+label_tiempo = tk.Label(
+    ventana, text="00:00:00", font=("Arial", 40, "bold"), bg="lightblue", borderwidth=3
+)
+label_tiempo.place(x=700, y=530)
 
 
+def actualizar_tiempo():
+    global tiempo_total
+    if tiempo_total > 0:
+        tiempo_total -= 1
+        horas, resto = divmod(tiempo_total, 3600)
+        minutos, segundos = divmod(resto, 60)
+        label_tiempo.config(text=f"{horas:02}:{minutos:02}:{segundos:02}")
+        ventana.after(1000, actualizar_tiempo)
+    else:
+        label_tiempo.config(text="00:00:00")
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Hora de salida
+label_hora_salida = tk.Label(
+    ventana,
+    text="Hora de salida: --:--:--",
+    font=("Arial", 16, "bold"),
+    bg="lightblue",
+    fg="black",
+)
+label_hora_salida.place(x=700, y=450)
+
+
+def calcular_hora_salida():
+    tiempo_actual = time.time()
+    tiempo_salida = tiempo_actual + tiempo_total
+    hora_salida = time.strftime("%H:%M:%S", time.localtime(tiempo_salida))
+    label_hora_salida.config(text=f"Hora de salida: {hora_salida}")
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Boton de iniciar servicio
+def iniciar_servicio():
+    time.sleep(0.5)
+    tiempo_servicio = tiempo_total
+    cliente = nombre_cliente.get()
+    box = numero_box.get()
+    servicios_seleccionados = lista_servicios.get(0, tk.END)
+    extras_seleccionados = lista_extras.get(0, tk.END)
+
+    ventana_servicio = tk.Toplevel(ventana)
+    ventana_servicio.title(f"Cliente: {cliente}, Box: {box}")
+    ventana_servicio.geometry("400x500")
+    ventana_servicio.configure(background="lightblue")
+
+    label_cliente = tk.Label(
+        ventana_servicio,
+        text=f"Cliente: {cliente}",
+        font=("Arial", 14, "bold"),
+        bg="lightblue"
+    )
+    label_cliente.pack(pady=10)
+
+    label_box = tk.Label(
+        ventana_servicio,
+        text=f"Box: {box}",
+        font=("Arial", 14, "bold"),
+        bg="lightblue"
+    )
+    label_box.pack(pady=10)
+
+    label_servicios = tk.Label(
+        ventana_servicio,
+        text="Servicios seleccionados:",
+        font=("Arial", 14, "bold"),
+        bg="lightblue"
+    )
+    label_servicios.pack(pady=10)
+
+    for servicio in servicios_seleccionados:
+        tk.Label(
+            ventana_servicio,
+            text=servicio,
+            font=("Arial", 12),
+            bg="lightblue"
+        ).pack()
+
+    label_extras = tk.Label(
+        ventana_servicio,
+        text="Extras seleccionados:",
+        font=("Arial", 14, "bold"),
+        bg="lightblue"
+    )
+    label_extras.pack(pady=10)
+
+    for extra in extras_seleccionados:
+        tk.Label(
+            ventana_servicio,
+            text=extra,
+            font=("Arial", 12),
+            bg="lightblue"
+        ).pack()
+
+    label_tiempo_servicio = tk.Label(
+        ventana_servicio,
+        text="00:00:00",
+        font=("Arial", 30, "bold"),
+        bg="lightblue"
+    )
+    label_tiempo_servicio.pack(pady=10)
+
+    label_hora_salida_servicio = tk.Label(
+        ventana_servicio,
+        text="Hora de salida: --:--:--",
+        font=("Arial", 14, "bold"),
+        bg="lightblue"
+    )
+    label_hora_salida_servicio.pack(pady=10)
+
+    def actualizar_tiempo_servicio():
+        nonlocal tiempo_servicio
+        if tiempo_servicio > 0:
+            tiempo_servicio -= 1
+            horas, resto = divmod(tiempo_servicio, 3600)
+            minutos, segundos = divmod(resto, 60)
+            label_tiempo_servicio.config(text=f"{horas:02}:{minutos:02}:{segundos:02}")
+            ventana_servicio.after(1000, actualizar_tiempo_servicio)
+        else:
+            label_tiempo_servicio.config(text="00:00:00")
+            mostrar_popup_finalizacion()
+
+    def calcular_hora_salida_servicio():
+        tiempo_actual = time.time()
+        tiempo_salida = tiempo_actual + tiempo_servicio
+        hora_salida = time.strftime("%H:%M:%S", time.localtime(tiempo_salida))
+        label_hora_salida_servicio.config(text=f"Hora de salida: {hora_salida}")
+
+    def mostrar_popup_finalizacion():
+        popup = tk.Toplevel(ventana_servicio)
+        popup.title("Servicio Finalizado")
+        popup.geometry("400x150")
+        popup.configure(background="lightblue")
+
+        label_popup = tk.Label(
+            popup,
+            text=f"¡{cliente}, en la box: {box} ha finalizado!",
+            font=("Arial", 14, "bold"),
+            bg="lightblue"
+        )
+        label_popup.pack(pady=30)
+
+        boton_ok = tk.Button(
+            popup,
+            text="OK",
+            command=popup.destroy,
+            font=("Arial", 12, "bold"),
+            bg="lightblue",
+            borderwidth=3
+        )
+        boton_ok.pack(pady=10)
+
+    calcular_hora_salida_servicio()
+    actualizar_tiempo_servicio()
+
+boton_iniciar = tk.Button(
+    ventana,
+    text="Iniciar Servicio",
+    command=iniciar_servicio,
+    font=("Arial", 20, "bold"),
+    bg="lightblue",
+    borderwidth=3
+)
+boton_iniciar.place(x=700, y=600)
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+# Mostrar ventana principal
 ventana.mainloop()
