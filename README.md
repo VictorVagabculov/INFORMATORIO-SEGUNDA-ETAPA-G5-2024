@@ -21,12 +21,12 @@ Este proyecto es una aplicación de recepción para un spa, desarrollada como pa
    git clone https://github.com/VictorVagabculov/INFORMATORIO-SEGUNDA-ETAPA-G5-2024
 
 2. Instalar las dependencias necesarias. El proyecto utiliza Pillow para la manipulación de imágenes:
-
-pip install Pillow
+   ```bash
+   pip install Pillow
 
 3. Ejecutar la aplicación:
 
-python Recepcion_spa.py
+   Recepcion_spa.py
 
 Archivos principales
 
@@ -36,7 +36,6 @@ Archivos principales
 -.gitignore: Define los archivos y directorios que se deben ignorar en el repositorio.
 
 Uso
-
 
 -Inicio: Al ejecutar la aplicación, aparecerá una ventana principal donde se podrá ingresar el nombre del cliente y el número de box.
 -Selección de servicios: Se pueden seleccionar servicios desde los menús desplegables de "Servicios Principales" y "Extras".
